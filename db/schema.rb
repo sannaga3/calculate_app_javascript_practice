@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_31_034536) do
+ActiveRecord::Schema.define(version: 2021_07_31_142330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2021_07_31_034536) do
     t.integer "english"
     t.integer "science"
     t.integer "total_score"
-    t.integer "average_score"
+    t.float "average_score"
     t.string "grade"
     t.string "remarks"
     t.datetime "created_at", precision: 6, null: false
