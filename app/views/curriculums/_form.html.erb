@@ -82,6 +82,14 @@ $(function() {
     $('#curriculum_average_score').val(average_score);
   };
   function grade_judge() {
+    subjects = [math, english, science];
+    for (i=0; i<subjects.length; i++) {
+      if (subjects[i] < 40) {
+        grade = "D";
+        $('#curriculum_grade').val(grade);
+        return
+      }
+    }
     if (average_score >= 80) {
       grade = "A";
     } else if (average_score >= 60) {
