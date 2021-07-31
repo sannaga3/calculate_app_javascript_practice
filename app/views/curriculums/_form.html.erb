@@ -38,7 +38,7 @@
 
   <div class="field">
     <%= form.label :grade %>
-    <%= form.text_field :grade %>
+    <%= form.select :grade, Curriculum.grades.keys, include_blank: "選択して下さい" %>
   </div>
 
   <div class="field">
