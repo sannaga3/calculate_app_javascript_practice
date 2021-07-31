@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Math:</strong>
+  <%= @curriculum.math %>
+</p>
+
+<p>
+  <strong>English:</strong>
+  <%= @curriculum.english %>
+</p>
+
+<p>
+  <strong>Science:</strong>
+  <%= @curriculum.science %>
+</p>
+
+<p>
+  <strong>Total score:</strong>
+  <%= @curriculum.total_score %>
+</p>
+
+<p>
+  <strong>Average score:</strong>
+  <%= @curriculum.average_score %>
+</p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @curriculum.grade %>
+</p>
+
+<p>
+  <strong>Remarks:</strong>
+  <%= @curriculum.remarks %>
+</p>
+
+<%= link_to 'Edit', edit_curriculum_path(@curriculum) %> |
+<%= link_to 'Back', curriculums_path %>

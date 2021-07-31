@@ -1,0 +1,52 @@
+<%= form_with(model: curriculum, local: true) do |form| %>
+  <% if curriculum.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(curriculum.errors.count, "error") %> prohibited this curriculum from being saved:</h2>
+
+      <ul>
+        <% curriculum.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :math %>
+    <%= form.number_field :math %>
+  </div>
+
+  <div class="field">
+    <%= form.label :english %>
+    <%= form.number_field :english %>
+  </div>
+
+  <div class="field">
+    <%= form.label :science %>
+    <%= form.number_field :science %>
+  </div>
+
+  <div class="field">
+    <%= form.label :total_score %>
+    <%= form.number_field :total_score %>
+  </div>
+
+  <div class="field">
+    <%= form.label :average_score %>
+    <%= form.number_field :average_score %>
+  </div>
+
+  <div class="field">
+    <%= form.label :grade %>
+    <%= form.text_field :grade %>
+  </div>
+
+  <div class="field">
+    <%= form.label :remarks %>
+    <%= form.text_field :remarks %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
