@@ -69,8 +69,9 @@ $(function() {
     if ((math >= 1 && math <= 100) && (english >= 1 && english <= 100) && (science >= 1 && science <= 100 )) {
       total_score_calculate();
       average_score_calculate();
-    }
-  }
+      grade_judge();
+    };
+  };
   function total_score_calculate() {
     total_score = math + english + science;
     $('#curriculum_total_score').val(total_score);
@@ -79,6 +80,19 @@ $(function() {
   function average_score_calculate() {
     average_score = ((math + english + science) / 3).toFixed(1);
     $('#curriculum_average_score').val(average_score);
+    return
+  };
+  function grade_judge() {
+    if (average_score >= 80) {
+      grade = "A";
+    } else if (average_score >= 60) {
+      grade = "B";
+    } else if (average_score >= 40) {
+      grade = "C";
+    } else {
+      grade = "D";
+    }
+    $('#curriculum_grade').val(grade);
     return
   };
 });
