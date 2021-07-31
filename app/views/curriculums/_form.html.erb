@@ -70,17 +70,16 @@ $(function() {
       total_score_calculate();
       average_score_calculate();
       grade_judge();
+      remarks_common_phrase();
     };
   };
   function total_score_calculate() {
     total_score = math + english + science;
     $('#curriculum_total_score').val(total_score);
-    return
   };
   function average_score_calculate() {
     average_score = ((math + english + science) / 3).toFixed(1);
     $('#curriculum_average_score').val(average_score);
-    return
   };
   function grade_judge() {
     if (average_score >= 80) {
@@ -93,7 +92,16 @@ $(function() {
       grade = "D";
     }
     $('#curriculum_grade').val(grade);
-    return
+  };
+  function remarks_common_phrase() {
+    switch (grade) {
+      case "A": common_phrase="素晴らしい"; break;
+      case "B": common_phrase="良いですね"; break;
+      case "C": common_phrase="努力が必要です"; break;
+      case "D": common_phrase="赤点です"; break;
+      default : common_phrase=""; break;
+    };
+    $('#curriculum_remarks').val(common_phrase);
   };
 });
 </script>
