@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :students
   root to: 'curriculums#index'
   resources :curriculums do
     get 'average_ranking', on: :collection
