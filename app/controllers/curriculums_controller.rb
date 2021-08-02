@@ -57,9 +57,9 @@ class CurriculumsController < ApplicationController
   end
 
   def average_ranking
-    @average_score_list = Curriculum.pluck(:average_score)
+    @average_score_list = Curriculum.order(average_score: :desc).pluck(:student ,:average_score)
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_curriculum
@@ -68,6 +68,6 @@ class CurriculumsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def curriculum_params
-      params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks)
+      params.require(:curriculum).permit(:student ,:math, :english, :science, :total_score, :average_score, :grade, :remarks)
     end
 end

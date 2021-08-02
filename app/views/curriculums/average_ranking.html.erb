@@ -1,8 +1,8 @@
 <h2>平均点ランキング</h2>
 <% rank = 1 %>
-<% @average_score_list.each do |average_score| %>
+<% @average_score_list.each do |student, average_score| %>
   <div>
-    <p>No.<%= "#{rank}: #{average_score}点" %></p>
+    <p>No.<%= "#{rank}: #{student} #{average_score}点" %></p>
   </div>
   <% rank += 1 %>
 <% end %>

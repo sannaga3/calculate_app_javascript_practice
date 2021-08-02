@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Student</th>
       <th>Math</th>
       <th>English</th>
       <th>Science</th>
@@ -19,6 +20,7 @@
   <tbody>
     <% @curriculums.each do |curriculum| %>
       <tr>
+        <td><%= curriculum.student %></td>
         <td><%= curriculum.math %></td>
         <td><%= curriculum.english %></td>
         <td><%= curriculum.science %></td>
