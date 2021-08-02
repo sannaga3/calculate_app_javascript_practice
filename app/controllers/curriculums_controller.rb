@@ -3,7 +3,7 @@ class CurriculumsController < ApplicationController
 
   # GET /curriculums or /curriculums.json
   def index
-    @curriculums = Curriculum.all
+    @curriculums = Curriculum.includes(:student)
   end
 
   # GET /curriculums/1 or /curriculums/1.json
@@ -12,17 +12,19 @@ class CurriculumsController < ApplicationController
 
   # GET /curriculums/new
   def new
+    @students = Student.all
     @curriculum = Curriculum.new
   end
 
   # GET /curriculums/1/edit
   def edit
+    @students = Student.all
   end
 
   # POST /curriculums or /curriculums.json
   def create
     @curriculum = Curriculum.new(curriculum_params)
-
+    @students = Student.all
     respond_to do |format|
       if @curriculum.save
         format.html { redirect_to @curriculum, notice: "Curriculum was successfully created." }
@@ -36,6 +38,7 @@ class CurriculumsController < ApplicationController
 
   # PATCH/PUT /curriculums/1 or /curriculums/1.json
   def update
+    @students = Student.all
     respond_to do |format|
       if @curriculum.update(curriculum_params)
         format.html { redirect_to @curriculum, notice: "Curriculum was successfully updated." }
@@ -57,11 +60,17 @@ class CurriculumsController < ApplicationController
   end
 
   def average_ranking
-    @average_score_list = Curriculum.order(average_score: :desc).limit(5).pluck(:student ,:average_score)
+    @average_score_list = Curriculum.order(average_score: :desc).limit(5).pluck(:student_id ,:average_score)
+    @average_score_list.map! do |k, v|
+      [Student.find_by(id: k).name, v]
+    end
   end
 
   def math_ranking
-    @math_score_list = Curriculum.order(math: :desc).limit(5).pluck(:student ,:math)
+    @math_score_list = Curriculum.order(math: :desc).limit(5).pluck(:student_id ,:math)
+    @math_score_list.map! do |k, v|
+      [Student.find_by(id: k).name, v]
+    end
   end
 
   private
@@ -72,6 +81,6 @@ class CurriculumsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def curriculum_params
-      params.require(:curriculum).permit(:student ,:math, :english, :science, :total_score, :average_score, :grade, :remarks)
+      params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks, :student_id)
     end
 end

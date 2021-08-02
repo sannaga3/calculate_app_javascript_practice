@@ -20,7 +20,7 @@
   <tbody>
     <% @curriculums.each do |curriculum| %>
       <tr>
-        <td><%= curriculum.student %></td>
+        <td><%= curriculum.student.name %></td>
         <td><%= curriculum.math %></td>
         <td><%= curriculum.english %></td>
         <td><%= curriculum.science %></td>
@@ -39,6 +39,9 @@
 <br>
 
 <%= link_to 'New Curriculum', new_curriculum_path %>
+<%= link_to 'New Student', new_student_path %>
+<br>
+<%= link_to 'Students', students_path %>
 <%= link_to "ranking_average_score", average_ranking_curriculums_path, id: "ranking_average_score"%>
 
 <script>

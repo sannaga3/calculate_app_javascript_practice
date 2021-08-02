@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :student %>
-    <%= form.text_field :student %>
+    <%= form.label :student_id %>
+    <div><%= form.select :student_id, @students.all.map {|student| ["#{student.name}", student.id]}, include_blank: "選択して下さい" %></div>
   </div>
 
   <div class="field">
