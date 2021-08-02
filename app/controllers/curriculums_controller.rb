@@ -57,7 +57,11 @@ class CurriculumsController < ApplicationController
   end
 
   def average_ranking
-    @average_score_list = Curriculum.order(average_score: :desc).pluck(:student ,:average_score)
+    @average_score_list = Curriculum.order(average_score: :desc).limit(5).pluck(:student ,:average_score)
+  end
+
+  def math_ranking
+    @math_score_list = Curriculum.order(math: :desc).limit(5).pluck(:student ,:math)
   end
 
   private
