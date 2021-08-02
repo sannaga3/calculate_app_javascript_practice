@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= form.label :average_score %>
-    <%= form.number_field :average_score %>
+    <%= form.number_field :average_score, min: '0.1' ,step: '0.1' %>
   </div>
 
   <div class="field">
@@ -52,64 +52,70 @@
 <% end %>
 
 <script>
-$(function() {
-  $('#curriculum_math').on('input', function(e) {
-    calculate_judgement();
-  });
-  $('#curriculum_english').on('input', function(e) {
-    calculate_judgement();
-  });
-  $('#curriculum_science').on('input', function(e) {
-    calculate_judgement();
-  });
-  function calculate_judgement() {
-    math = Number($('#curriculum_math').val());
-    english = Number($('#curriculum_english').val());
-    science = Number($('#curriculum_science').val());
-    if ((math >= 1 && math <= 100) && (english >= 1 && english <= 100) && (science >= 1 && science <= 100 )) {
-      total_score_calculate();
-      average_score_calculate();
-      grade_judge();
-      remarks_common_phrase();
+  $(function() {
+    // 各得点入力時にcalculate_judgement関数を呼び出す
+    $('#curriculum_math').on('input', function(e) {
+      calculate_judgement();
+    });
+    $('#curriculum_english').on('input', function(e) {
+      calculate_judgement();
+    });
+    $('#curriculum_science').on('input', function(e) {
+      calculate_judgement();
+    });
+    // 得点入力フォームが全て埋まっていれば、以降のフォームが自動で埋まるように各関数を呼び出す
+    function calculate_judgement() {
+      math = Number($('#curriculum_math').val());
+      english = Number($('#curriculum_english').val());
+      science = Number($('#curriculum_science').val());
+      if ((math >= 1 && math <= 100) && (english >= 1 && english <= 100) && (science >= 1 && science <= 100 )) {
+        total_score_calculate();
+        average_score_calculate();
+        grade_judge();
+        remarks_common_phrase();
+      };
     };
-  };
-  function total_score_calculate() {
-    total_score = math + english + science;
-    $('#curriculum_total_score').val(total_score);
-  };
-  function average_score_calculate() {
-    average_score = ((math + english + science) / 3).toFixed(1);
-    $('#curriculum_average_score').val(average_score);
-  };
-  function grade_judge() {
-    subjects = [math, english, science];
-    for (i=0; i<subjects.length; i++) {
-      if (subjects[i] < 40) {
-        grade = "D";
-        $('#curriculum_grade').val(grade);
-        return
+    // 合計点を計算してフォームに入力する
+    function total_score_calculate() {
+      total_score = math + english + science;
+      $('#curriculum_total_score').val(total_score);
+    };
+    // 平均点を計算してフォームに入力する
+    function average_score_calculate() {
+      average_score = ((math + english + science) / 3).toFixed(1);
+      $('#curriculum_average_score').val(average_score);
+    };
+    // 個別の得点で赤点がないか確認し、その後成績判定を行う
+    function grade_judge() {
+      subjects = [math, english, science];
+      for (i=0; i<subjects.length; i++) {
+        if (subjects[i] < 40) {
+          grade = "D";
+          $('#curriculum_grade').val(grade);
+          return
+        }
       }
-    }
-    if (average_score >= 80) {
-      grade = "A";
-    } else if (average_score >= 60) {
-      grade = "B";
-    } else if (average_score >= 40) {
-      grade = "C";
-    } else {
-      grade = "D";
-    }
-    $('#curriculum_grade').val(grade);
-  };
-  function remarks_common_phrase() {
-    switch (grade) {
-      case "A": common_phrase="素晴らしい"; break;
-      case "B": common_phrase="良いですね"; break;
-      case "C": common_phrase="努力が必要です"; break;
-      case "D": common_phrase="赤点です"; break;
-      default : common_phrase=""; break;
+      if (average_score >= 80) {
+        grade = "A";
+      } else if (average_score >= 60) {
+        grade = "B";
+      } else if (average_score >= 40) {
+        grade = "C";
+      } else {
+        grade = "D";
+      }
+      $('#curriculum_grade').val(grade);
     };
-    $('#curriculum_remarks').val(common_phrase);
-  };
-});
+    // 成績を元に備考欄にコメントを記述する
+    function remarks_common_phrase() {
+      switch (grade) {
+        case "A": common_phrase="素晴らしい"; break;
+        case "B": common_phrase="良いですね"; break;
+        case "C": common_phrase="努力が必要です"; break;
+        case "D": common_phrase="赤点です"; break;
+        default : common_phrase=""; break;
+      };
+      $('#curriculum_remarks').val(common_phrase);
+    };
+  });
 </script>

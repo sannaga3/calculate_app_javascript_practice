@@ -56,6 +56,10 @@ class CurriculumsController < ApplicationController
     end
   end
 
+  def average_ranking
+    @average_score_list = Curriculum.pluck(:average_score)
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_curriculum

@@ -37,3 +37,13 @@
 <br>
 
 <%= link_to 'New Curriculum', new_curriculum_path %>
+<%= link_to "ranking_average_score", average_ranking_curriculums_path, id: "ranking_average_score"%>
+
+<script>
+  $(function() {
+    $('#ranking_average_score').on('click', function(e) {
+      window.open(this.href, 'ranking', 'width=375 height=812');
+      return false;
+    });
+  });
+</script>

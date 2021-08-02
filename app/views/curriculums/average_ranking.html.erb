@@ -1,0 +1,18 @@
+<h2>平均点ランキング</h2>
+<% rank = 1 %>
+<% @average_score_list.each do |average_score| %>
+  <div>
+    <p>No.<%= "#{rank}: #{average_score}点" %></p>
+  </div>
+  <% rank += 1 %>
+<% end %>
+
+<%= link_to '閉じる', "#", id: "close_average_ranking" %>
+
+<script>
+  $(function() {
+    $('#close_average_ranking').on('click', function(e) {
+      window.close();
+    });
+  });
+</script>
