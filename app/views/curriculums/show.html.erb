@@ -40,5 +40,24 @@
   <%= @curriculum.remarks %>
 </p>
 
+<p><h3>ダブルチェック</h3></p>
+  <div>
+    <% @curriculum.double_checks.each do |d| %>
+      <p>
+        <strong>teacher_name:</strong>
+        <%= d.teacher_name %>
+      </p>
+
+      <p>
+        <strong>check:</strong>
+        <%= d.check %>
+      </p>
+
+      <p>
+        <strong>comment:</strong>
+        <%= d.comment %>
+      </p>
+    <% end %>
+  </div>
 <%= link_to 'Edit', edit_curriculum_path(@curriculum) %> |
 <%= link_to 'Back', curriculums_path %>

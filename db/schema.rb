@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2021_08_02_215333) do
 
   create_table "double_checks", force: :cascade do |t|
     t.string "teacher_name"
-    t.boolean "check"
+    t.integer "check"
     t.string "comment"
     t.bigint "curriculum_id", null: false
     t.datetime "created_at", precision: 6, null: false

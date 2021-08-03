@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :student_id %>
-    <div><%= form.select :student_id, @students.all.map {|student| ["#{student.name}", student.id]}, include_blank: "選択して下さい" %></div>
+    <%= form.select :student_id, @students.all.map {|student| ["#{student.name}", student.id]}, include_blank: "選択して下さい" %>
   </div>
 
   <div class="field">
@@ -49,6 +49,23 @@
   <div class="field">
     <%= form.label :remarks %>
     <%= form.text_field :remarks %>
+  </div>
+
+  <p><h3>ダブルチェック</h3></p>
+  <div>
+    <%= form.fields_for :double_checks do |d| %>
+      <div class='double_check_form', id="double_check_form1">
+        <div class="field"><%= d.label :teacher_name %></div>
+        <div class="field"><%= d.text_field :teacher_name %></div>
+        <div class="check_box_container field">
+          <%= d.label :check, "yes" %><%= d.radio_button :check, :yes %>
+          <%= d.label :check, "no" %><%= d.radio_button :check, :no %>
+        </div>
+        <div class="field"><%= d.label :comment %></div>
+        <div class="field"><%= d.text_field :comment %></div>
+        <%= d.hidden_field :curriculum_id, value: @curriculum.id %>
+      </div>
+    <% end %>
   </div>
 
   <div class="actions">

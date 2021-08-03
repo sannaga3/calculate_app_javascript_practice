@@ -14,6 +14,7 @@ class CurriculumsController < ApplicationController
   def new
     @students = Student.all
     @curriculum = Curriculum.new
+    @curriculum.double_checks.build
   end
 
   # GET /curriculums/1/edit
@@ -81,6 +82,9 @@ class CurriculumsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def curriculum_params
-      params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks, :student_id)
+      params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks, :student_id,
+        double_checks_attributes:
+        [:id, :teacher_name, :check, :comment, :curriculum_id]
+      )
     end
 end
