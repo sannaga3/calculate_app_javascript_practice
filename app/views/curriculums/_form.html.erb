@@ -52,6 +52,7 @@
   </div>
 
   <p><h3>ダブルチェック</h3></p>
+  <hr>
   <%= form.fields_for :double_checks do |d| %>
     <div id="form_area">
       <div class='double_check_component', id="double_check_form1">
@@ -63,7 +64,9 @@
         </div>
         <div class="field"><%= d.label :comment %></div>
         <div class="field"><%= d.text_field :comment %></div>
+        <div>ダブルチェック削除<%= d.check_box :_destroy %></div>
         <%= d.hidden_field :curriculum_id, value: @curriculum.id %>
+        <hr>
       </div>
     </div>
   <% end %>
