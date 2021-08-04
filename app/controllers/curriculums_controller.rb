@@ -84,7 +84,7 @@ class CurriculumsController < ApplicationController
     def curriculum_params
       params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks, :student_id,
         double_checks_attributes:
-        [:id, :teacher_name, :check, :comment, :curriculum_id]
+        [:id, :teacher_name, :check, :comment, :curriculum_id, :_destroy]
       )
     end
 end

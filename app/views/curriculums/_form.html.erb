@@ -52,9 +52,9 @@
   </div>
 
   <p><h3>ダブルチェック</h3></p>
-  <div>
-    <%= form.fields_for :double_checks do |d| %>
-      <div class='double_check_form', id="double_check_form1">
+  <%= form.fields_for :double_checks do |d| %>
+    <div id="form_area">
+      <div class='double_check_component', id="double_check_form1">
         <div class="field"><%= d.label :teacher_name %></div>
         <div class="field"><%= d.text_field :teacher_name %></div>
         <div class="check_box_container field">
@@ -65,16 +65,19 @@
         <div class="field"><%= d.text_field :comment %></div>
         <%= d.hidden_field :curriculum_id, value: @curriculum.id %>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
 
+<p><button id='add_form' >フォームの追加</button></p>
+
 <script>
   $(function() {
+    // 科目計算ここから
     // 各得点入力時にcalculate_judgement関数を呼び出す
     $('#curriculum_math').on('input', function(e) {
       calculate_judgement();
@@ -139,5 +142,34 @@
       };
       $('#curriculum_remarks').val(common_phrase);
     };
+    // 得点計算ここまで
+
+    // 動的フォーム追加ここから
+    function buildForm(formIndex) {
+      let html = `
+        <div class="double_check_component", id="double_check_form${formIndex}">
+          <div class="field"><label for="curriculum_double_checks_attributes_${formIndex}_teacher_name">Teacher name</label></div>
+          <div class="field"><input type="text" name="curriculum[double_checks_attributes][${formIndex}][teacher_name]" id="curriculum_double_checks_attributes_0_teacher_name"></div>
+          <div class="check_box_container field">
+            <label for="curriculum_double_checks_attributes_${formIndex}_check">yes</label><input type="radio" value="yes" name="curriculum[double_checks_attributes][${formIndex}][check]" id="curriculum_double_checks_attributes_${formIndex}_check_yes">
+            <label for="curriculum_double_checks_attributes_${formIndex}_check">no</label><input type="radio" value="no" name="curriculum[double_checks_attributes][${formIndex}][check]" id="curriculum_double_checks_attributes_${formIndex}_check_no">
+          </div>
+          <div class="field"><label for="curriculum_double_checks_attributes_${formIndex}_comment">Comment</label></div>
+          <div class="field"><input type="text" name="curriculum[double_checks_attributes][${formIndex}][comment]" id="curriculum_double_checks_attributes_${formIndex}_comment"></div>
+        </div>`;
+      console.log(html);
+      return html;
+    };
+    $("#add_form").click(function() {
+      let form_area = $("#form_area");
+      console.log(form_area);
+      let formIndex = $('.double_check_component').length;
+      formIndex += 1;
+      form_area.append(buildForm(formIndex));
+      console.log(formIndex);
+      if (formIndex > 4) {
+        $("#add_form").css("display","none");
+      };
+    });
   });
 </script>
