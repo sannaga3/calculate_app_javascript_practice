@@ -1,28 +1,23 @@
 class CurriculumsController < ApplicationController
   before_action :set_curriculum, only: %i[ show edit update destroy ]
 
-  # GET /curriculums or /curriculums.json
   def index
     @curriculums = Curriculum.includes(:student)
   end
 
-  # GET /curriculums/1 or /curriculums/1.json
   def show
   end
 
-  # GET /curriculums/new
   def new
     @students = Student.all
     @curriculum = Curriculum.new
     @curriculum.double_checks.build
   end
 
-  # GET /curriculums/1/edit
   def edit
     @students = Student.all
   end
 
-  # POST /curriculums or /curriculums.json
   def create
     @curriculum = Curriculum.new(curriculum_params)
     @students = Student.all
@@ -37,7 +32,6 @@ class CurriculumsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /curriculums/1 or /curriculums/1.json
   def update
     @students = Student.all
     respond_to do |format|
@@ -51,7 +45,6 @@ class CurriculumsController < ApplicationController
     end
   end
 
-  # DELETE /curriculums/1 or /curriculums/1.json
   def destroy
     @curriculum.destroy
     respond_to do |format|
@@ -75,12 +68,10 @@ class CurriculumsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_curriculum
       @curriculum = Curriculum.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def curriculum_params
       params.require(:curriculum).permit(:math, :english, :science, :total_score, :average_score, :grade, :remarks, :student_id,
         double_checks_attributes:
