@@ -1,22 +1,60 @@
-<%= form_with(model: student, local: true) do |form| %>
-  <% if student.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(student.errors.count, "error") %> prohibited this student from being saved:</h2>
+<%= form_with(model: @form, url: students_path, method: :post, local: true) do |form| %>
 
-      <ul>
-        <% student.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form.fields_for :students do |f| %>
+    <div id="form_area">
+      <div class="student_form_component">
+        <div class="field">
+          <%= f.label :name %>
+          <% if @student %>
+            <%= f.text_field :name, value: "#{@student.name}" %>
+          <% else %>
+            <%= f.text_field :name %>
+          <% end %>
+        </div>
+      </div>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<p><button id='add_form' >フォームの追加</button></p>
+
+<script>
+  $(function() {
+    function buildForm(formIndex) {
+      let html = `
+      <div class="student_form_component">
+        <div class="field">
+          <label for="form_student_collection_students_attributes_0_name">Name</label>
+            <input type="text" name="form_student_collection[students_attributes][${formIndex}][name]" id="form_student_collection_students_attributes_0_name">
+        </div>
+      </div>
+      `;
+      console.log(html);
+      return html;
+    };
+    $("#add_form").click(function() {
+      let form_area = $("#form_area");
+      console.log(form_area);
+      let formIndex = $('.student_form_component').length;
+      formIndex += 1;
+      form_area.append(buildForm(formIndex));
+      console.log(formIndex);
+      if (formIndex > 4) {
+        $("#add_form").css("display","none");
+      };
+    });
+    // $('form').submit(function() {
+    //   let data = $(this).parents('form').serialize();
+    //   alert(data);
+    // });
+    // form.addEventListener('formdata', (e) => {
+    // component_count = ＄('.student_form_component').length;
+
+    // var fd = e.formData;
+    // fd.set('student', 'dummy@gmail.com');
+  });
+</script>

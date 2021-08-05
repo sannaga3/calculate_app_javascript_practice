@@ -12,7 +12,7 @@ class StudentsController < ApplicationController
 
   # GET /students/new
   def new
-    @student = Student.new
+    @form = Form::StudentCollection.new
   end
 
   # GET /students/1/edit
@@ -21,15 +21,43 @@ class StudentsController < ApplicationController
 
   # POST /students or /students.json
   def create
-    @student = Student.new(student_params)
-    respond_to do |format|
-      if @student.save
-        format.html { redirect_to @student, notice: "Student was successfully created." }
-        format.json { render :show, status: :created, location: @student }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @student.errors, status: :unprocessable_entity }
-      end
+    # @student = Student.new(student_params)
+
+    # paramsからstudentを個別に取り出し@studentsとして登録する → @studentsにsaveができない
+    # instances = params[:student].values.count
+    # @students =[]
+    # instances.times do
+    #   @student = Student.new(student_params)
+    #   @students << @student
+    # end
+
+    
+    # instances = params[:student].values.count
+    # instances.times do
+    #   @student = Student.new(student_params)
+    # end
+
+    # paramから＠studentを作成して登録までの流れを２.times行う　→ ダブルレンダーのエラーが回避できない
+    # instances = params[:student].values.count
+    # instances.times do
+    #   @student = Student.new(student_params)
+    # end
+    # respond_to do |format|
+    #   if @student.save
+    #     format.html { redirect_to @student, notice: "Student was successfully created." }
+    #     format.json { render :show, status: :created, location: @student }
+    #   else
+    #     format.html { render :new, status: :unprocessable_entity }
+    #     format.json { render json: @student.errors, status: :unprocessable_entity }
+    #   end
+    # end
+
+    @form = Form::StudentCollection.new(student_collection_params)
+    if @form.save
+      redirect_to students_path, notice: "生徒を登録しました"
+    else
+      flash.now[:alert] = "生徒の登録に失敗しました"
+      render :new
     end
   end
 
@@ -64,5 +92,10 @@ class StudentsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def student_params
       params.require(:student).permit(:name)
+    end
+
+    def student_collection_params
+      params.require(:form_student_collection)
+      .permit(students_attributes: [:id, :name])
     end
 end

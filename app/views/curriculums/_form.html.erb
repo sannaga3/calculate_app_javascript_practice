@@ -52,8 +52,8 @@
   </div>
 
   <p><h3>ダブルチェック</h3></p>
-  <hr>
   <%= form.fields_for :double_checks do |d| %>
+    <hr>
     <div id="form_area">
       <div class='double_check_component', id="double_check_form1">
         <div class="field"><%= d.label :teacher_name %></div>
@@ -64,32 +64,32 @@
         </div>
         <div class="field"><%= d.label :comment %></div>
         <div class="field"><%= d.text_field :comment %></div>
-        <div>ダブルチェック削除<%= d.check_box :_destroy %></div>
+        <div>フォーム送信時にダブルチェック削除<%= d.check_box :_destroy %></div>
+        <p><button class='reduce_itself' style="display: none;" type="button">ダブルチェックを動的に削除</button></p>
         <%= d.hidden_field :curriculum_id, value: @curriculum.id %>
-        <hr>
       </div>
     </div>
   <% end %>
-
+  <hr>
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
 
-<p><button id='add_form' >フォームの追加</button></p>
-<p><button id='reduce_form' style="display: none;" >フォームの削除</button></p>
+<p><button id='add_form'>フォームの追加</button></p>
+<p><button id='reduce_form' style="display: none;">フォームの削除</button></p>
 
 <script>
   $(function() {
     // 科目計算ここから
     // 各得点入力時にcalculate_judgement関数を呼び出す
-    $('#curriculum_math').on('input', function(e) {
+    $('#curriculum_math').on('input', function() {
       calculate_judgement();
     });
-    $('#curriculum_english').on('input', function(e) {
+    $('#curriculum_english').on('input', function() {
       calculate_judgement();
     });
-    $('#curriculum_science').on('input', function(e) {
+    $('#curriculum_science').on('input', function() {
       calculate_judgement();
     });
     // 得点入力フォームが全て埋まっていれば、以降のフォームが自動で埋まるように各関数を呼び出す
@@ -161,7 +161,9 @@
           </div>
           <div class="field"><label for="curriculum_double_checks_attributes_${formIndex}_comment">Comment</label></div>
           <div class="field"><input type="text" name="curriculum[double_checks_attributes][${formIndex}][comment]" id="curriculum_double_checks_attributes_${formIndex}_comment"></div>
-        </div>`;
+          <p><a href="#" class='reduce_itself' id='reduce_itself${formIndex}'>ダブルチェックを動的に削除</a></p>
+        </div>
+        <hr>`;
       console.log(html);
       return html;
     };
@@ -172,11 +174,12 @@
       formIndex += 1;
       form_area.append(buildForm(formIndex));
       $("#reduce_form").css("display","block");
+      $(".reduce_itself").css("display","block");
       if (formIndex > 4) {
         $("#add_form").css("display","none");
       };
     });
-    // 最後に追加したフォームを削除する
+    // フォームが２個以上であれば最後に追加したフォームを削除する
     $("#reduce_form").click(function() {
       let formIndex = $('.double_check_component').length;
       if (formIndex > 1) {
@@ -184,8 +187,23 @@
         formIndex -= 1;
         if (formIndex < 2) {
           $("#reduce_form").css("display","none");
-        };;
+        }
       }
     });
+    // フォームが２個以上であれば個別のフォームを削除する
+    // 画面遷移を阻止できない為保留
+    // $(".reduce_itself").click(function(event) {
+    //   event.preventDefault();
+    //   let target = $(event.target).attr("id");
+    //   console.log(target);
+    //   let formIndex = $('.double_check_component').length;
+    //   if (formIndex > 1) {
+    //     target.closest('.double_check_component').remove();
+    //     formIndex -= 1;
+    //     if (formIndex < 2) {
+    //       $(".reduce_itself").css("display","none");
+    //     }
+    //   }
+    // });
   });
 </script>
