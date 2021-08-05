@@ -26,7 +26,7 @@
         <td><%= curriculum.science %></td>
         <td><%= curriculum.total_score %></td>
         <td><%= curriculum.average_score %></td>
-        <td><%= curriculum.grade %></td>
+        <td data-value="#{<%= curriculum.grade %>}"><%= content_tag :span, curriculum.grade, class: "grade", "data-grade" => curriculum.grade %></td>
         <td><%= curriculum.remarks %></td>
         <td><%= link_to 'Show', curriculum %></td>
         <td><%= link_to 'Edit', edit_curriculum_path(curriculum) %></td>
@@ -46,7 +46,21 @@
 
 <script>
   $(function() {
-    $('#ranking_average_score').on('click', function(e) {
+    // 成績のランク毎にcssを当てて色分けする
+    $('.grade').each(function() {
+      grade = $(this).data('grade');
+      switch (grade) {
+        case "A": color="orange"; break;
+        case "B": color="green"; break;
+        case "C": color="blue"; break;
+        case "D": color="red"; break;
+        default : color=""; break;
+      };
+      console.log(color)
+      $(this).css('color', color)
+    });
+    // 平均点ランキングを新規ウィンドウで開く
+    $('#ranking_average_score').on('click', function() {
       window.open(this.href, 'ranking', 'width=375 height=812');
       return false;
     });
