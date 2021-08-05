@@ -1,9 +1,4 @@
-class Form::StudentCollection
-  include ActiveModel::Model
-  include ActiveModel::Callbacks
-  include ActiveModel::Validations
-  include ActiveModel::Validations::Callbacks
-
+class Form::StudentCollection < Form::Base
   FORM_COUNT = 1
   attr_accessor :students
 
@@ -26,9 +21,9 @@ class Form::StudentCollection
       self.students.map do |s|
         s.save
       end
-      return true
-    rescue => e
-      return false
     end
+    return true
+  rescue => e
+    return false
   end
 end
