@@ -21,6 +21,7 @@
 <% end %>
 
 <p><button id='add_form' >フォームの追加</button></p>
+<p><button id='reduce_form' style="display: none;">フォームの削除</button></p>
 
 <script>
   $(function() {
@@ -41,11 +42,23 @@
       console.log(form_area);
       let formIndex = $('.student_form_component').length;
       formIndex += 1;
+      $("#reduce_form").css("display","block");
       form_area.append(buildForm(formIndex));
       console.log(formIndex);
       if (formIndex > 4) {
         $("#add_form").css("display","none");
       };
+    });
+    $("#reduce_form").click(function() {
+      let formIndex = $('.student_form_component').length;
+      if (formIndex > 1) {
+        $('.student_form_component:last').remove();
+        formIndex -= 1;
+        $("#add_form").css("display","block");
+        if (formIndex < 2) {
+          $("#reduce_form").css("display","none");
+        }
+      }
     });
     // $('form').submit(function() {
     //   let data = $(this).parents('form').serialize();
