@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Math:</strong>
+  <%= @target_score.math %>
+</p>
+
+<p>
+  <strong>English:</strong>
+  <%= @target_score.english %>
+</p>
+
+<p>
+  <strong>Science:</strong>
+  <%= @target_score.science %>
+</p>
+
+<p>
+  <strong>Student:</strong>
+  <%= @target_score.student_id %>
+</p>
+
+<%= link_to 'Edit', edit_target_score_path(@target_score) %> |
+<%= link_to 'Back', target_scores_path %>

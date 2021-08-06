@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :target_scores
   resources :students
   root to: 'curriculums#index'
   resources :curriculums do

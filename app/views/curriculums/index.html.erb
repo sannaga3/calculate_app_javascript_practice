@@ -40,6 +40,7 @@
 
 <%= link_to 'New Curriculum', new_curriculum_path %>
 <%= link_to 'New Student', new_student_path %>
+<%= link_to 'New Target_score', new_student_path %>
 <br>
 <%= link_to 'Students', students_path %>
 <%= link_to "ranking_average_score", average_ranking_curriculums_path, id: "ranking_average_score"%>
@@ -64,7 +65,7 @@
     });
 
     // 合計点の上位３人を判別し、合計点と名前にcssで色を付ける
-    function total_score_add_color(e) {
+    function total_score_add_color() {
       let total_score_array = [];                        // sortの元となる配列の準備
       get_total_scores();                                // 以下関数の呼び出し  合計点と生徒名を全て取得
       sort_total_scores();                               //                  合計点の降順に並び替え
