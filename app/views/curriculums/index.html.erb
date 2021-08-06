@@ -20,11 +20,11 @@
   <tbody>
     <% @curriculums.each do |curriculum| %>
       <tr>
-        <td><%= curriculum.student.name %></td>
+        <td><%= content_tag :span, curriculum.student.name, class: "student_name" %></td>
         <td><%= curriculum.math %></td>
         <td><%= curriculum.english %></td>
         <td><%= curriculum.science %></td>
-        <td><%= curriculum.total_score %></td>
+        <td><%= content_tag :span, curriculum.total_score, class: "total_score", "data-total" => curriculum.total_score, 'data-student' => curriculum.student.name %></td>
         <td><%= curriculum.average_score %></td>
         <td data-value="#{<%= curriculum.grade %>}"><%= content_tag :span, curriculum.grade, class: "grade", "data-grade" => curriculum.grade %></td>
         <td><%= curriculum.remarks %></td>
@@ -47,18 +47,75 @@
 <script>
   $(function() {
     // 成績のランク毎にcssを当てて色分けする
-    $('.grade').each(function() {
-      grade = $(this).data('grade');
-      switch (grade) {
+    $('.grade').each(function(e) {            // e には 何個目の .grade か数字が返る
+      let grade = $(this).data('grade');
+      switch (grade) {                        // 成績に応じてcssの色分けをする
         case "A": color="orange"; break;
         case "B": color="green"; break;
         case "C": color="blue"; break;
         case "D": color="red"; break;
         default : color=""; break;
       };
-      console.log(color)
-      $(this).css('color', color)
+      $(this).css('color', color)             // 成績にswitch文で決まった色のcssを当てる
+      elements_length = $('.grade').length;
+      if (e == elements_length - 1) {         // 今回が配列の最後か e で確認する
+        total_score_add_color();              // 配列の最後であれば関数を呼び出し次の作業に移る
+      }
     });
+
+    // 合計点の上位３人を判別し、合計点と名前にcssで色を付ける
+    function total_score_add_color(e) {
+      let total_score_array = [];                        // sortの元となる配列の準備
+      get_total_scores();                                // 以下関数の呼び出し  合計点と生徒名を全て取得
+      sort_total_scores();                               //                  合計点の降順に並び替え
+      add_css_score_top_3();                             //                  上位3名の名前と合計点にcssで色付け
+
+      function get_total_scores() {
+        $('.total_score').each(function() {              // total_scoreクラスを1つずつ取得
+          let total_score = $(this).data('total');       // data属性のtotalを取得
+          let student = $(this).data('student');         // data属性のstudentを取得
+          let total_score_hash = {student, total_score}; // 生徒名と合計点のハッシュを作成
+          total_score_array.push(total_score_hash);      // 上記ハッシュを配列としてtotal_score_arrayに順次格納
+          console.log(total_score_hash);
+        });
+      };
+      function sort_total_scores() {
+        after_sort_array = total_score_array.sort(function(a, b){    // total_score_arrayの中身を並び替え（合計点の降順）
+          if(a.total_score > b.total_score) return -1;   // 1つ目の要素aと2つ目の要素bを比較して順番を入れ替え
+          if(a.total_score < b.total_score) return 1;
+          return 0;                                      // 上記２つのif文に当てはまらなければ入れ替えはしない
+        });
+      };
+      function add_css_score_top_3() {
+        let score_top_3 = after_sort_array.splice(0, 3); // sort済の配列の最初から3番目までを取得。第一引数は最初に取得するindex番号、第二引数引数は取得個数
+        // 合計点トップ3の点数色付けここから
+        let score_only = []
+        $.each(score_top_3, function(index, obj) {       // 生徒名：合計点のハッシュを合計点のみの配列に変換
+          score_only[index] = obj.total_score
+        });
+        $('.total_score').each(function() {              // テスト結果一覧ページのtop３名の名前と合計点を色付け
+          score = $(this).data('total');
+          let result = $.inArray(score, score_only);     // 合計点がscore_onlyの配列内に存在するか確認
+          if (result != -1) {                            // -1 は score_top_3 のいずれの値にも this が該当しないということ。該当する場合はindex番号が返ってくる
+            $(this).css('color', 'fuchsia');             // top３名の合計点を色付け
+          };
+        });
+        // 合計点トップ3の点数色付けここまで
+        // 合計点トップ3の名前色付けここから
+        let name_only = []
+        $.each(score_top_3, function(index, obj) {       // 生徒名：合計点のハッシュを生徒名のみの配列に変換
+          name_only[index] = obj.student
+        });
+        $('.student_name').each(function() {             // テスト結果一覧ページのtop３名の名前と合計点を色付け
+          student = $(this).text();                      // spanタグの値から生徒名を取得
+          let result = $.inArray(student, name_only);    // 生徒名がname_onlyの配列内に存在するか確認
+          if (result != -1) {                            // -1 は name_only のいずれの値にも this が該当しないということ。該当する場合はindex番号が返ってくる
+            $(this).css('color', 'fuchsia');             // top３名の合計点を色付け
+          };
+        });
+        // 合計点トップ3の名前色付けここまで
+      }
+    };
     // 平均点ランキングを新規ウィンドウで開く
     $('#ranking_average_score').on('click', function() {
       window.open(this.href, 'ranking', 'width=375 height=812');
