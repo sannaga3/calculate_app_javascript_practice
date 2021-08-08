@@ -12,24 +12,30 @@ class TargetScoresController < ApplicationController
 
   # GET /target_scores/new
   def new
+    @students = Student.all
     @target_score = TargetScore.new
   end
 
   # GET /target_scores/1/edit
   def edit
+    @students = Student.all
   end
 
   # POST /target_scores or /target_scores.json
   def create
-    @target_score = TargetScore.new(target_score_params)
-
+    # binding.irb
+    @target_score = TargetScore.new
+    @students = Student.all
     respond_to do |format|
       if @target_score.save
         format.html { redirect_to @target_score, notice: "Target score was successfully created." }
         format.json { render :show, status: :created, location: @target_score }
+        # format.json { binding.irb }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        # format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @target_score.errors, status: :unprocessable_entity }
+        # format.json { binding.irb }
+        # format.js { render json: @target_score.errors, status: :unprocessable_entity }
       end
     end
   end

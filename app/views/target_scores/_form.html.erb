@@ -1,4 +1,4 @@
-<%= form_with(model: target_score, local: true) do |form| %>
+<%= form_with(model: target_score, remote: true, format: 'json', id: "target_form") do |form| %>
   <% if target_score.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(target_score.errors.count, "error") %> prohibited this target_score from being saved:</h2>
@@ -10,6 +10,11 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="field">
+    <%= form.label :student_id %>
+    <%= form.select :student_id, @students.all.map {|student| ["#{student.name}", student.id]}, include_blank: "選択して下さい" %>
+  </div>
 
   <div class="field">
     <%= form.label :math %>
@@ -26,12 +31,84 @@
     <%= form.number_field :science %>
   </div>
 
-  <div class="field">
-    <%= form.label :student_id %>
-    <%= form.text_field :student_id %>
-  </div>
-
   <div class="actions">
-    <%= form.submit %>
+    <button id="btn">送信</button>
   </div>
 <% end %>
+
+<div id="response">response_area</div>
+
+<script>
+  $(function() {
+    $("#target_form").on('submit', function(e){
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const url = $(e.target).attr("action");
+
+      $.ajax({                          //Ajax通信を行う
+        url: url,
+        type:"POST",
+        dataType:"json",
+        data: formData,
+        processData: false,
+        contentType: false
+      })
+      .done(function(data) {
+        alert('done');
+        alert(JSON.stringify(data));
+      })
+      .fail(function(data) {
+        alert("fail");
+        alert(console.log(data));
+        // alert(JSON.stringify(data));
+        console.log(data.responseText);
+        // alert(data.responseText);
+      })
+      .always(function(data) {
+
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+<%
+=begin
+<script>
+  $(function() {
+    $("#btn").on('click', function(){
+      $.ajax({                          //Ajax通信を行う
+        url:"target_scores",
+        type:"POST",
+        dataType:"json",
+        data:{                          // レスポンスとして受け取るdataを作成
+          'student_id': $('#target_score_student_id').val(),
+          'math':Number($('#target_score_math').val()),
+          'english':Number($('#target_score_english').val()),
+          'science':Number($('#target_score_science').val())
+          }
+      })
+      .done(function(data) {
+        alert('done');
+        // alert(JSON.stringify(data));
+        alert(data);
+      })
+      .fail(function(data) {
+        alert("fail");
+        alert(JSON.stringify(data.responseText));
+        // alert(data.responseText);
+      })
+      .always(function(data) {
+
+      });
+    });
+  });
+</script>
+=end
+%>

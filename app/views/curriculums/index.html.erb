@@ -38,11 +38,10 @@
 
 <br>
 
-<%= link_to 'New Curriculum', new_curriculum_path %>
-<%= link_to 'New Student', new_student_path %>
-<%= link_to 'New Target_score', new_student_path %>
+<%= link_to 'New Curriculum', new_curriculum_path %> |
 <br>
-<%= link_to 'Students', students_path %>
+<%= link_to 'Students', students_path %> |
+<%= link_to 'Target_scores', target_scores_path %> |
 <%= link_to "ranking_average_score", average_ranking_curriculums_path, id: "ranking_average_score"%>
 
 <script>
@@ -111,7 +110,7 @@
           student = $(this).text();                      // spanタグの値から生徒名を取得
           let result = $.inArray(student, name_only);    // 生徒名がname_onlyの配列内に存在するか確認
           if (result != -1) {                            // -1 は name_only のいずれの値にも this が該当しないということ。該当する場合はindex番号が返ってくる
-            $(this).css('color', 'fuchsia');             // top３名の合計点を色付け
+            $(this).css('color', 'fuchsia');             // top３名の生徒名を色付け
           };
         });
         // 合計点トップ3の名前色付けここまで
