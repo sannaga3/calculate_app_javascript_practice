@@ -32,7 +32,7 @@
   </div>
 
   <div class="actions">
-    <button id="btn">送信</button>
+    <%= form.submit %>
   </div>
 <% end %>
 
@@ -47,33 +47,27 @@
 
       $.ajax({                          //Ajax通信を行う
         url: url,
-        type:"POST",
-        dataType:"json",
+        type: "POST",
+        dataType: "json",
         data: formData,
         processData: false,
         contentType: false
       })
       .done(function(data) {
         alert('done');
-        alert(JSON.stringify(data));
       })
       .fail(function(data) {
-        alert("fail");
-        alert(console.log(data));
-        // alert(JSON.stringify(data));
-        console.log(data.responseText);
-        // alert(data.responseText);
+        alert("fail");                          //リクエスト失敗の通知
+        console.log("エラー:" + data.status);          //エラーステータス
+        // alert(data.responseText);               //バリデーションエラー内容
+        // $("#response").append(formData);
       })
       .always(function(data) {
-
+        console.log(JSON.stringify(data));      //成功時: インスタンス  失敗時: バリデーションエラー内容
       });
     });
   });
 </script>
-
-
-
-
 
 
 
