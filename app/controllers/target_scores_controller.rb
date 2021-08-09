@@ -1,3 +1,4 @@
+require 'time'
 class TargetScoresController < ApplicationController
   before_action :set_target_score, only: %i[ show edit update destroy ]
 
@@ -22,10 +23,18 @@ class TargetScoresController < ApplicationController
     @students = Student.all
     respond_to do |format|
       if @target_score.save
-        format.html { redirect_to @target_score, notice: "Target score was successfully created." }
-        format.json { render :show, status: :created, location: @target_score }
+        @target_scores = TargetScore.pluck(:id, :math, :english, :science, :created_at)
+        @target_scores.map! { |id, math, english, science, created_at|
+          [id: id, math: math, english: english, science: science, created_at: created_at.to_i]
+        }
+        @target_scores = "data: #{@target_scores}"
+        @target_scores = @target_scores.to_json
+        format.json { render json: @target_scores, status: :ok }
+        # 以下コメントアウトは勉強用メモ
+        # @target_scores = @target_scores.to_json(only: [:id, :math, :english, :science, :created_at]) # renderの :except=> と同じ役割
+        # format.json { render json: @target_scores, :except => [:student_id, :updated_at], status: :ok }¥
+        # format.json { render :index, status: :created, location: @target_score }
       else
-        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @target_score.errors, status: 404 }
         # format.json { render :show, status: :created, location: @target_score }
       end
@@ -35,7 +44,7 @@ class TargetScoresController < ApplicationController
   def update
     respond_to do |format|
       if @target_score.update(target_score_params)
-        format.html { redirect_to @target_score, notice: "Target score was successfully updated." }
+        format.html { redirect_to @target_scores, notice: "Target score was successfully updated." }
         format.json { render :show, status: :ok, location: @target_score }
       else
         format.html { render :edit, status: :unprocessable_entity }
