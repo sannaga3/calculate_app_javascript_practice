@@ -36,7 +36,7 @@
   </div>
 <% end %>
 
-<div id="response">response_area</div>
+<div id="response"></div>
 
 <script>
   $(function() {
@@ -47,6 +47,9 @@
       // $("#post_button").prop('disabled', true);  //送信ボタンを1度押したら非活性化
       const formData = new FormData(e.target);
       const url = $(e.target).attr("action");
+      for (let value of formData.entries()) {    //formDataの内容確認
+        console.log(value);
+      }
 
       $.ajax({                                   //Ajax通信を行う
         url: url,
@@ -58,19 +61,19 @@
       })
       .done(function(data) {
         alert('done');
-        // console.log(url)                      // 以下4つ送信内容等確認
+        // console.log(url)                      // 以下3つ送信内容等確認
         // console.log(e.target)
-        // console.log(dataForm)
         // console.log(e)
       })
       .fail(function(data) {
         alert("fail");                           //リクエスト失敗の通知
         console.log("エラー:" + data.status);     //エラーステータス
         // alert(data.responseText);             //バリデーションエラー内容
-        // $("#response").append(formData);
       })
       .always(function(data) {
         console.log(JSON.stringify(data));      //成功時: インスタンス  失敗時: バリデーションエラー内容
+        $("#response").empty()                  //タグの内容を空にする
+        $("#response").append(JSON.stringify(data)); //タグにdataを表示する
       });
     });
   });

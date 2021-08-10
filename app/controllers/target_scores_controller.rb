@@ -21,6 +21,8 @@ class TargetScoresController < ApplicationController
   def create
     @target_score = TargetScore.new(target_score_params)
     @students = Student.all
+    # request =  JSON.parse(request.body.read, symbolize_name: true) #json形式のリクエストを表示
+    # p request
     respond_to do |format|
       if @target_score.save
         @target_scores = TargetScore.pluck(:id, :math, :english, :science, :created_at)
